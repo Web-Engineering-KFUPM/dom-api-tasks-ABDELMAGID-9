@@ -132,4 +132,4 @@ document.addEventListener("DOMContentLoaded", function () {
         if (errEl) errEl.textContent = "Could not load weather.";
       });
   });
-});
+});;
