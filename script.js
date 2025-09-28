@@ -19,8 +19,9 @@ inside the <p> element with id="t1-msg".
 💡 Hint:
 document.getElementById("t1-msg").innerHTML = "Hello, World!";
 */
- 
-
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("t1-msg").textContent = "Hello, World!";
+});
 /*  
 =======================================
 TODO2: Interaction Corner
@@ -39,9 +40,15 @@ the <p> with id="t2-status" to:
 button.addEventListener("click", function () {
     // change text here
 });
-*/
  
-
+*/
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("t2-btn").addEventListener("click", function () {
+    document.getElementById("t2-status").textContent = "You clicked the button!";
+  });
+});
+  
+  
 /*  
 =======================================
 TODO3: Inspiring Quote Board
@@ -68,7 +75,20 @@ Use:
 data.content   // the quote text
 data.author    // the author
 */
- 
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("t3-loadQuote").addEventListener("click", function () {
+    fetch("https://dummyjson.com/quotes/random")
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("t3-quote").textContent  = d.content || d.quote || "Keep going.";
+        document.getElementById("t3-author").textContent = d.author  || "Unknown";
+      })
+      .catch(() => {
+        document.getElementById("t3-quote").textContent  = "Do not watch the clock. Do what it does. Keep going.";
+        document.getElementById("t3-author").textContent = "Sam Levenson";
+      });
+  });
+});
 
 /*  
 =======================================
@@ -94,3 +114,22 @@ data.main.temp      → temperature (°C)
 data.main.humidity  → humidity (%)
 data.wind.speed     → wind speed (m/s)
 */
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("t4-loadWx").addEventListener("click", function () {
+    const url = "https://api.openweathermap.org/data/2.5/weather?q=Dammam&appid=d51f2f00c3b137ccfd135bd8f9dd50aa&units=metric";
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .then(d => {
+        document.getElementById("t4-temp").textContent = d.main.temp     + " °C";
+        document.getElementById("t4-hum").textContent  = d.main.humidity + " %";
+        document.getElementById("t4-wind").textContent = d.wind.speed    + " m/s";
+      })
+      .catch(() => {
+        const errEl = document.getElementById("t4-err");
+        if (errEl) errEl.textContent = "Could not load weather.";
+      });
+  });
+});
